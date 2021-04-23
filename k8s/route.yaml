@@ -1,0 +1,14 @@
+kind: Route
+apiVersion: v1
+metadata:
+  labels:
+    app: test-okteto
+  name: test-okteto
+spec:
+  port:
+    targetPort: tcp-port
+  to:
+    name: test-okteto
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Allow

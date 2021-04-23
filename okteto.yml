@@ -1,0 +1,21 @@
+name: test-okteto
+image: docker-registry.default.svc:5000/sandbox-cwis-cs/golang:1
+workdir: /app
+command: ["bash"]
+environment:
+  #https://github.com/openshift/release/issues/9748
+  - GOCACHE=/tmp/
+securityContext:  
+  runAsUser: 1002340000
+initContainer:
+  image: docker-registry.default.svc:5000/sandbox-cwis-cs/okteto:1.2.23
+  resources:
+    requests:
+      cpu: 100m
+      memory: 30Mi
+    limits:
+      cpu: 200m
+      memory: 30Mi
+forward:
+  - 8080:8080
+  - 2345:2345
