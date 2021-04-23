@@ -51,8 +51,23 @@ forward:
   - 8080:8080
   - 2345:2345
 ```
-6. Activate the development container: okteto up
+6. Activate the development container: 
+```shell
+okteto up
+```
 7. After starting an okteto container, the user will be inside the container and will be able to start app directly from there (e.g. go run main.go)
-8. Finishing the test, terminate container and stop okteto using the command okteto down 
 
+Debug directly in Open Shift container
 
+8. Cancel the execution of go run main.go from the development container shell by pressing ctrl + c. Rerun your application in debug mode:
+```shell
+dlv debug --headless --listen=:2345 --log --api-version=2
+```
+9. Open the Debug view in VS Code and run the Connect to okteto debug configuration 
+10. Add a breakpoint on main.go, line 17. Call your application by executing from your local shell:  curl test-okteto-sandbox-cwis-cs.ocp-02.ikeadt.com:8080 or refreshing web browsr page https://test-okteto-sandbox-cwis-cs.ocp-02.ikeadt.com/
+11. The execution will halt at the breakpoint. The user can then inspect the request, the available variables, etc…
+12. Cancel the execution of debug mode from the development container shell by pressing ctrl + c
+13. Finishing the test, terminate container and stop okteto using the command 
+```shell
+okteto down
+```
