@@ -1,9 +1,9 @@
 # Okteto Demo 
 
-*IMPORTANT:* The sample is runnable only in OpenShift IKEA network and has to be used in test environment (https://ocm-02.ikeadt.com:8443/).
+*IMPORTANT:* The sample is runnable only in dedicated OpenShift environment.
 All necessary images are already stored in OpenShift container registry..
 
-The demo demonstrates how to configure and start okteto in OpenShift IKEA test environment.
+The demo demonstrates how to configure and start okteto in an OpenShift test environment.
 
 - Start okteto container in OpenShift cluster ;
 - Debug application in localy;
@@ -14,7 +14,7 @@ Before you begin this tutorial, you’ll need the following:
 - kubectl (oc) installed and configured to communicate with your cluster.
 - okteto CLI
 
-Due to blacklisting dockerhub.io in Open Shift cluster, two docker images are mandatory and should be imported in the local registry: 
+Two docker images are mandatory and should be presented/downloaded in the container registry: 
 
 - okteto/golang
 - okteto/bin
@@ -34,7 +34,6 @@ image: docker-registry.default.svc:5000/sandbox-cwis-cs/golang:1
 workdir: /app
 command: ["bash"]
 environment:
-  #https://github.com/openshift/release/issues/9748
   - GOCACHE=/tmp/
 securityContext:  
   runAsUser: 1002340000
@@ -57,14 +56,14 @@ okteto up
 ```
 7. After starting an okteto container, the user will be inside the container and will be able to start app directly from there (e.g. go run main.go)
 
-Debug directly in Open Shift container
+Debug directly in Open Shift cluster
 
 8. Cancel the execution of go run main.go from the development container shell by pressing ctrl + c. Rerun your application in debug mode:
 ```shell
 dlv debug --headless --listen=:2345 --log --api-version=2
 ```
 9. Open the Debug view in VS Code and run the Connect to okteto debug configuration 
-10. Add a breakpoint on main.go, line 17. Call your application by executing from your local shell:  curl test-okteto-sandbox-cwis-cs.ocp-02.ikeadt.com:8080 or refreshing web browsr page https://test-okteto-sandbox-cwis-cs.ocp-02.ikeadt.com/
+10. Add a breakpoint on main.go, line 17. Call your application by executing from your local shell:  curl test-okteto-sandbox-cwis-cs.ocp-02.testdomain.com:8080 or refreshing web browser page https://test-okteto-sandbox-cwis.testdomain.com/
 11. The execution will halt at the breakpoint. The user can then inspect the request, the available variables, etc…
 12. Cancel the execution of debug mode from the development container shell by pressing ctrl + c
 13. Finishing the test, terminate container and stop okteto using the command 
